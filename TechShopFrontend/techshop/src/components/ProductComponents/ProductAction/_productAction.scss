@@ -1,0 +1,74 @@
+.product-quantity {
+    background-color: #f6f6f6;
+    display: flex;
+    padding: 10px 0px;
+    // hide default button of input
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .quantity-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        color: #666;
+        &::before {
+            content: "";
+            height: 14px;
+            width: 1px;
+            position: absolute;
+            background-color: #666;
+        }
+        &:first-child::before {
+            right: 0;
+        }
+        &:last-child::before {
+            left: 0;
+        }
+        &:hover {
+            color: #e77733;
+        }
+    }
+    .flex {
+        width: 33.33%;
+    }
+    input {
+        color: #666;
+        text-align: center;
+        border: none;
+        background-color: inherit;
+        font-weight: 600;
+    }
+}
+.product-actions {
+    background-color: #f6f6f6;
+    display: flex;
+    padding: 10px 0px;
+    color: #666;
+    padding: 10px 0;
+    justify-content: center;
+    text-align: center;
+    &:hover {
+        color: #e77733;
+    }
+}
+.stock-status {
+    color: #666;
+    font-weight: 400;
+    font-size: small;
+    display: flex;
+    justify-content: space-between;
+    span {
+        font-weight: 600;
+        font-size: medium;
+        color: #5cb85c;
+        &.in-stock {
+            color: #5cb85c;
+        }
+        &.out-of-stock {
+            color: red;
+        }
+    }
+}

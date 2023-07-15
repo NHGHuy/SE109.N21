@@ -1,0 +1,18 @@
+.product-grid-view {
+    .option-table {
+        background-color: white;
+        margin-bottom: 30px;
+        &-heading {
+            color: #666666;
+            font-weight: bold;
+            border-bottom: 1px solid rgb(246, 246, 246);
+            padding: 10px 30px;
+            letter-spacing: 0.8px;
+        }
+        &-content {
+            padding: 20px 30px;
+            max-height: 320px;
+            overflow: scroll;
+        }
+    }
+}

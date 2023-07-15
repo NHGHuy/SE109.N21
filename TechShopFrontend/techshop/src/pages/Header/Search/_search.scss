@@ -1,0 +1,98 @@
+.search-form {
+    z-index: 999;
+    display: inline;
+    position: relative;
+
+    width: 50px;
+    height: 40px;
+    //transition: 0.5s;
+    div:focus-within {
+        width: 470px !important;
+
+        i {
+            color: #e77733;
+            background-color: white;
+        }
+    }
+    div {
+        position: relative;
+        input {
+            padding-left: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+
+            line-height: 35px;
+
+            //     font-size: 1em;
+            border-radius: 25px;
+            border: solid 1px #e77733;
+            transition: 0.5s;
+            background-color: #e77733;
+            pointer-events: none;
+            &:focus {
+                padding-right: 50px;
+                outline: none;
+                width: 470px;
+                background-color: white;
+                div {
+                    width: 470px !important;
+                    height: 40px !important;
+                    i {
+                        color: #e77733 !important;
+                        background-color: white;
+                    }
+                }
+            }
+        }
+        i {
+            box-sizing: border-box;
+            position: absolute;
+            top: 2px;
+            right: 10px;
+            border-radius: 50%;
+            padding: 10px;
+            background-color: #e77733;
+            color: white;
+        }
+    }
+    &:hover {
+        .search-bar {
+            width: 470px;
+            position: relative;
+            i {
+                color: #e77733;
+                background-color: white;
+            }
+            input {
+                padding-right: 50px;
+                pointer-events: visible;
+                width: 470px;
+                background-color: white;
+            }
+        }
+    }
+    // &:focus-within {
+    //     .result-container {
+    //         visibility: visible;
+    //         opacity: 1;
+    //     }
+
+    // }
+    
+}
+
+// form:hover{
+//     width: 200px;
+//     cursor: pointer;
+// }
+
+// form:hover input{
+//     display: block;
+// }
+
+// form:hover .fa{
+//     background: #07051a;
+//     color: white;
+// }

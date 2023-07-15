@@ -1,0 +1,26 @@
+.table-payment {
+    width: 100%;
+    tfoot tr {
+        border-bottom: none !important;
+        td {
+            color: #c87065;
+            border-bottom: none;
+        }
+    }
+    .payment-detail {
+        border-bottom: 1px solid #e5e5e5;
+        color: #999;
+        font-weight: 700;
+        font-size: small;
+        td {
+            padding: 10px 20px;
+        }
+        .price {
+            text-align: right;
+        }
+        .discount {
+            color: #5cb85c;
+            text-align: right;
+        }
+    }
+}

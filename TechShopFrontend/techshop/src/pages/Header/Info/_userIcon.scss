@@ -1,0 +1,53 @@
+.user-icon {
+    img {
+        height: 40px;
+        width: 40px;
+        background-color: white;
+        border-radius: 100%;
+        &:hover {
+            transition: 0.8s;
+            box-shadow: 10px 0px 40px -5px #e77733, 0 0 0px 2px #e77733;
+        }
+    }
+    .dropdown-switcher {
+        &:hover {
+            .dropdown {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+        .dropdown {
+            width: 160px;
+            position: absolute;
+            //top: 60px;
+            right: 10px;
+            border: 1px solid #adadad;
+            background-color: white;
+
+            padding: 30px;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+
+            display: flex;
+            flex-direction: column;
+            div, a {
+                text-align: right;
+                font-weight: normal;
+                line-height: 32px;
+                color: #606060;
+                transition: 0.4s;
+                &:hover {
+                    transition: 0.4s;
+                    text-decoration: none;
+                    padding-right: 8px;
+                    color: #e77733;
+                }
+                &.active {
+                    padding-right: 15px;
+                    color: #e77733;
+                }
+            }
+        }
+    }
+}

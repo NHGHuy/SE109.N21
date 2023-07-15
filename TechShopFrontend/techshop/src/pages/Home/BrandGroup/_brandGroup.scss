@@ -1,0 +1,43 @@
+.brand-info {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px #eee solid;
+    position: relative;
+    flex-direction: column;
+    overflow: hidden;
+    &:hover {
+        .brand-img:nth-child(2) {
+            top: 0px;
+            left: 0;
+        }
+        .brand-img:first-child {
+            bottom: -200px;
+            left: 0;
+        }
+    }
+    .brand-img {
+        transition: 0.8s;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+            width: 100px;
+            height: 100px;
+        }
+        &:first-child {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        &:nth-child(2) {
+            position: absolute;
+            top: -200px;
+            left: 0;
+        }
+    }
+}

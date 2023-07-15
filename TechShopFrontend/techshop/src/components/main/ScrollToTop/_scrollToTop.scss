@@ -1,0 +1,18 @@
+.scroll-to-top {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    &:hover {
+        i {
+            opacity: 1;
+        }
+    }
+    i {
+        padding: 20px;
+        font-size: 40px;
+        background-color: transparent;
+        color: #e77733;
+        opacity: .5;
+    }
+}

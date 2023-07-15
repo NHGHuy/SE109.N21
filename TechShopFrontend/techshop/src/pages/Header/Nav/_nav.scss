@@ -1,0 +1,104 @@
+.nav-bar {
+    align-items: center;
+    .nav {
+        ul {
+            padding: 0;
+            margin: 0;
+            li {
+                display: inline;
+                padding: 20px;
+                font-size: smaller;
+                font-weight: bold;
+                position: relative;
+                
+                &:hover {
+                    a {
+                        text-decoration: none;
+                        color: #e77733;
+                        &:after {
+                            width: 50%;
+                        }
+                    }
+                }
+                a {
+                    color: black;
+                    transition: 0.5s;
+                    &:after {
+                        transition: 0.5s;
+                        position: absolute;
+                        content: "";
+                        background-color: #e77733;
+
+                        height: 2px;
+                        width: 0%;
+
+                        bottom: 10px;
+                        left: 0;
+                        right: 0;
+
+                        margin: 0 auto;
+                    }
+                }
+                .active {
+                    color: #e77733;
+                    &:after {
+                        position: absolute;
+                        content: "";
+                        background-color: #e77733;
+
+                        height: 2px;
+                        width: 50%;
+
+                        bottom: 10px;
+                        left: 0;
+                        right: 0;
+
+                        margin: 0 auto;
+                    }
+                }
+                &.dropdown-switcher {
+                    &:hover {
+                        .dropdown {
+                            visibility: visible;
+                            opacity: 1;
+                        }
+                    }
+                    .dropdown {
+                        width: 600px;
+                        position: absolute;
+                        top: 60px;
+                        transition: 0.3s;
+                        border: 1px solid #adadad;
+                        background-color: white;
+
+                        padding: 40px;
+                        z-index: 999;
+                        opacity: 0;
+                        visibility: hidden;
+                        .col-4 {
+                            display: flex;
+                            flex-direction: column;
+                            a {
+                                font-weight: normal;
+                                line-height: 32px;
+                                color: #606060;
+                                &:hover {
+                                    padding-left: 8px;
+                                    color: #e77733;
+                                }
+                                &:after {
+                                    width: 0;
+                                }
+                                &.active {
+                                    font-weight: 600;
+                                    padding-left: 15px;
+                                    color: #e77733;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

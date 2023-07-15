@@ -1,0 +1,62 @@
+.billing-details {
+    .title-details {
+        font-size: small;
+        font-weight: 600;
+        font-style: italic;
+        .new-address {
+            font-style: normal;
+            color: #c8a165;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        .group-btn {
+            width: 35%;
+            margin-top: 10px;
+            float: right;
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                //width: 40%;
+                //padding: 10px 20px;
+            }
+            .btn-address-form {
+                background-color: #c8a165;
+            }
+        }
+    }
+    
+    
+    .barrier {
+        text-align: center;
+        
+        span{
+            font-size: smaller;
+            font-style: italic;
+            z-index: 999;
+            position: relative;
+            
+            &:before {
+                margin-right: 20px;
+                position: absolute;
+                content: "";
+                top:50%;
+                right: 0;
+                height: 1px;
+                width: 200px;
+                background-color: #eee;
+            }
+            &:after {
+                margin-left: 20px;
+                position: absolute;
+                content: "";
+                top:50%;
+                left: 0;
+                height: 1px;
+                width: 200px;
+                background-color: #eee;
+            }
+        }
+    }
+}

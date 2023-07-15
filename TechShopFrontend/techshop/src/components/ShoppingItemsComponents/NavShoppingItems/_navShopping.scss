@@ -1,0 +1,19 @@
+.nav-shopping {
+    background-color: white;
+    font-weight: 600;
+    color: #999;
+    text-align: center;
+    padding: 15px 30px;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    font-size: smaller;
+    &:hover {
+        background-color: #c8a165;
+        color: white;
+        box-shadow: 1px -25px 54px rgba(0, 0, 0, 0.2);
+    }
+    &.active {
+        background-color: #c8a165;
+        color: white;
+    }
+}

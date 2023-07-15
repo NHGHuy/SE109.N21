@@ -1,0 +1,47 @@
+.detailed-order {
+    .title {
+        font-size: small;
+        font-weight: 600;
+    }
+    .content {
+        border: 1px dashed rgb(0, 153, 0);
+        padding: 10px 10px;
+        background-color: #f6f6f6;
+        min-height: 100px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        .name {
+            font-weight: 600;
+        }
+        .basic-info {
+            font-size: small;
+        }
+    }
+    .product-table {
+        table {
+            width: 100%;
+            text-align: center;
+            thead {
+                background-color: #f6f6f6;
+                color: #666;
+                th {
+                    text-transform: uppercase;
+                    font-size: smaller;
+                    padding: 10px;
+                }
+            }
+            tfoot {
+                td {
+                    padding: 10px 10px;
+                    text-align: right;
+                }
+                .sum {
+                    color: red;
+                    font-weight: 600;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

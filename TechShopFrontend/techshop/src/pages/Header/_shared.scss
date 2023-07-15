@@ -1,0 +1,16 @@
+@mixin inset-shadow {
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: inset 0px 0px 10px 0px white;
+    &:hover {
+        box-shadow: 10px 0px 40px -5px #E77733, inset 0px 0px 40px 0px white;
+    }
+    
+}
+
+@mixin inset-shadow-active {
+    transition: 0.8s;
+    box-shadow: 0 0 0px 2px #E77733, inset 0px 0px 40px 0px white;
+    
+    
+}

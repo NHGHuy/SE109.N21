@@ -1,0 +1,16 @@
+.shipping-info {
+    border: 1px dashed rgb(0, 153, 0);
+    padding: 10px 10px;
+    background-color: #f6f6f6;
+    
+    .name {
+        font-weight: 600;
+    }
+    .basic-info {
+        font-size: small;
+    }
+    .confirm {
+        font-weight: 600;
+        color:rgb(0, 153, 0);
+    }
+}

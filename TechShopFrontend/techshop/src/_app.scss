@@ -1,0 +1,39 @@
+.wrapper {
+    background-color: rgb(252, 235, 198);
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    .body-content {
+        margin-top:70px;
+        width: 100%;
+        background-color: white;
+        position: relative;
+    }
+    
+}
+
+@media (max-width: 1440px) {
+    .main-content {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1441px) {
+    .main-content {
+        width: 80%;
+    }
+}
+@media (min-width: 1600px) {
+    .main-content {
+        width: 70%;
+    }
+}
+
+@media (min-width: 2400px) {
+    .main-content {
+        width: 50%;
+    }
+}
+body {
+    font-family: 'Cabin', sans-serif !important;
+}

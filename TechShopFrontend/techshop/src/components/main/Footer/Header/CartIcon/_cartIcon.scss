@@ -1,0 +1,17 @@
+.cart-items {
+    i {
+        position: relative;
+
+        .cart-items-count {
+            font-size: 15px;
+            position: absolute;
+            top: 28px;
+            left: 20px;
+            border-radius: 50%;
+            background-color: #e77733;
+            color: white;
+            line-height: 16px;
+            padding: 0px 5px;
+        }
+    }
+}

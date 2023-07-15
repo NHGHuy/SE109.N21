@@ -1,0 +1,30 @@
+.breadcrumb-nav {
+    ul {
+        padding: 0;
+        list-style-type: none;
+        li {
+            color: white;
+            margin-right: 38px;
+            display: inline;
+            position: relative;
+            text-transform: uppercase;
+            font-weight: 600;
+            a {
+                color: inherit;
+            }
+            &:first-child:after {
+                content: "";
+            }
+            &::after {
+                content: "/";
+                position: absolute;
+                left: -22px;
+                color: white;
+                //font-size: inherit;
+            }
+            &.active-breadcrumb {
+                color: black;
+            }
+        }
+    }
+}

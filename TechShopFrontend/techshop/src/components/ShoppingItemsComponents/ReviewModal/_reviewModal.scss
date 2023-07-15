@@ -1,0 +1,104 @@
+.reviewModal {
+    max-width: 600px !important;
+    .modal-content {
+        height: 450px;
+    }
+}
+.review-modal-header {
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    img {
+        height: 50px;
+        width: 50px;
+        margin: 0px 12px 0px 0px;
+    }
+    .product-name {
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+    .supplier {
+        font-size: small;
+        color: rgb(153, 153, 153);
+    }
+}
+.review-modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .rate-area {
+        margin: 20px 0;
+        font-weight: 600;
+        text-align: center;
+        font-size: larger;
+        div {
+            margin-bottom: 12px;
+        }
+        .rate-star {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            svg {
+                margin: 0px 8px;
+                font-size: xx-large;
+                color: rgb(255, 181, 0);
+            }
+        }
+    }
+    svg:hover,
+    svg:hover ~ svg {
+        path {
+            fill: rgb(253, 216, 53);
+        }
+    }
+    textarea {
+        width: 100%;
+        border: 1px solid rgb(238, 238, 238);
+        padding: 12px;
+        border-radius: 4px;
+    }
+    .btn-review {
+        float: right;
+        background-color: rgb(253, 216, 53);
+
+        color: rgb(36, 36, 36);
+        border-radius: 4px;
+        font-size: small;
+        button {
+            padding: 5px 15px;
+            background-color: rgb(253, 216, 53);
+            border: rgb(253, 216, 53);
+        }
+        .loading-review {
+            padding: 5px 30px;
+        }
+    }
+}
+.reviewed-modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    img {
+        height: 200px;
+        width: 200px;
+    }
+    .response {
+        text-align: center;
+        color: rgb(127, 127, 127);
+        .thank-you {
+            color: black;
+            font-weight: 600;
+            line-height: 60px;
+            font-size: x-large;
+        }
+    }
+    button {
+        padding: 10px 70px;
+        background-color: #e77733;
+        border: 1px solid #e77733;
+        border-radius: 5px;
+        color: white;
+    }
+}

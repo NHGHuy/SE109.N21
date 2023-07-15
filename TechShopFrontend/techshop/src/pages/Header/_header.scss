@@ -1,0 +1,29 @@
+header {
+      height: 70px;
+      background-color: rgb(252, 235, 198);
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0px 30px;
+      width: 100%;
+      .header-top {
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            .shop-name {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  text-align: center;
+                  a {
+                        text-decoration: none;
+                        font-weight: bold;
+                        font-size: larger;
+                        color: black;
+                  }
+            }
+      }
+}

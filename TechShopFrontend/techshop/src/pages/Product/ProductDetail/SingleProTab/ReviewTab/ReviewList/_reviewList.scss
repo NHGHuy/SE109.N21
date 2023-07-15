@@ -1,0 +1,16 @@
+.review-list {
+    .col-review {
+        border-bottom: 1px solid #eee;
+    }
+    .more-btn {
+        text-align: center;
+        font-weight: 600;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            font-style: italic;
+            cursor: pointer;
+            color: #5cb85c;
+        }
+    }
+}

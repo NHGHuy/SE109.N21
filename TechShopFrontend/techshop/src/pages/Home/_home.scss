@@ -1,0 +1,115 @@
+.wrapper-dashboard {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .trending-dashboard {
+        width: 90%;
+        .header-top-dashboard {
+            display: flex;
+            justify-content: space-between;
+            button {
+                margin: 0 10px;
+                border: none;
+                color: black;
+                border-radius: 20px;
+                &:hover {
+                    border: 1px solid #e77733;
+                    background-color: transparent;
+                }
+                &.active,
+                &:focus {
+                    background-color: transparent;
+                    border: 1px solid #e77733;
+                    outline: none;
+                    box-shadow: none;
+                    color: #e77733;
+                    font-weight: 700;
+                }
+            }
+        }
+        .header-hot-proposes {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            a {
+                font-size: x-large;
+                color: #e77733;
+                margin: 0px 10px;
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+        }
+        .top-row {
+            .carousel-indicators li {
+                background-color: #e77733;
+            }
+            .carousel-inner {
+                padding-bottom: 30px;
+            }
+        }
+    }
+    .subscription {
+        border-radius: 20px;
+        width: 90%;
+        background-image: url("../../assets/images/pic6.jpeg");
+
+        height: 700px;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        
+    }
+    .supported-brand {
+        width: 90%;
+
+        height: 680px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        .content {
+            width: 100%;
+            h1 {
+                color: #e77733;
+                font-weight: 700;
+            }
+            .title-deco {
+                span {
+                    width: 100px;
+                    background-color: #e77733;
+                    height: 2px;
+                    display: inline-block;
+                    position: relative;
+                    &:before {
+                        content: "";
+                        height: 2px;
+                        width: 4px;
+                        position: absolute;
+                        top: 0;
+                        left: -10px;
+                        background-color: inherit;
+                    }
+                    &:after {
+                        content: "";
+                        height: 2px;
+                        width: 4px;
+                        position: absolute;
+                        top: 0;
+                        right: -10px;
+                        background-color: inherit;
+                    }
+                }
+            }
+            .brands {
+                .col-4, .col-sm-4, .col-md-3, .col-lg-3 {
+                    padding:0;
+                }
+            }
+        }
+    }
+}

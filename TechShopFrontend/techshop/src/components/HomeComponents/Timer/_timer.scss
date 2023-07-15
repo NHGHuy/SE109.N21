@@ -1,0 +1,23 @@
+.count-down-element {
+    display: inline-block;
+
+    border-radius: 50%;
+    border: 1px solid #e77733;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    .count-down-content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    span {
+        font-size: 0.5em;
+        color: #888;
+        text-transform: uppercase;
+    }
+}

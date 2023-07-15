@@ -1,0 +1,19 @@
+.single-pro-info {
+    width: 100%;
+    background-color: white;
+    padding: 30px;
+    .single-pro-slider {
+        position: relative;
+        img {
+            width: 100%;
+            height: 500px;
+            transition: 0.5s;
+        }
+    }
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+       
+    }
+}

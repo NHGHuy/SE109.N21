@@ -1,0 +1,20 @@
+.order-row {
+    // &:hover {
+    //     background-color: rgb(244, 244, 244);
+    // }
+    td {
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgb(244, 244, 244);
+        color: black;
+        font-size: small;
+        &.order-ID {
+            a {
+                font-weight: 600;
+                color: rgb(51, 128, 247) !important;
+                &:hover {
+                    text-decoration: underline !important;
+                }
+            }
+        }
+    }
+}

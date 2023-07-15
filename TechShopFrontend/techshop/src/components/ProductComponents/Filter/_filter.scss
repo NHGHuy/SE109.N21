@@ -1,0 +1,15 @@
+.filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+        font-weight: normal;
+        color: #757575;
+    }
+    select {
+        border: none;
+        option {
+            color: black;
+        }
+    }
+}
