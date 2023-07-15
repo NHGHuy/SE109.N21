@@ -1,0 +1,499 @@
+-- SQLINES DEMO *** *********************************************************************************************
+-- create table --
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE BRAND_seq;
+
+CREATE TABLE BRAND (
+    brandID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('BRAND_seq'),
+    brandName VARCHAR(40),
+    brandImg VARCHAR(40),
+    isDeleted BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE CATEGORY_seq;
+
+CREATE TABLE CATEGORY (
+    categoryID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('CATEGORY_seq'),
+    categoryName VARCHAR(40),
+    categorySlug VARCHAR(40),
+    categoryExact BOOL,
+    isDeleted BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE USER_seq;
+
+CREATE TABLE "USER"(
+    userID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('USER_seq'),
+    fullname VARCHAR(40),
+    email VARCHAR(100),
+    pswd VARCHAR(100) DEFAULT '1',
+    DOB DATE,
+    phone VARCHAR(12),
+    address VARCHAR(40),
+    roleID INT DEFAULT 1,
+    gender VARCHAR(7),
+    totalInvoices INT DEFAULT 0,
+    isDeleted BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE ROLE_seq;
+
+CREATE TABLE "ROLE" (
+    roleID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('ROLE_seq'),
+    roleName VARCHAR(30)
+)  ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE INVOICE_seq;
+
+CREATE TABLE INVOICE (
+    invoiceID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('INVOICE_seq'),
+    userID INT,
+    totalCost INT,
+    invoiceDate DATE,
+    shippingDate DATE,
+    note TEXT,
+    userInvoiceIndex VARCHAR(30),
+    statusInvoice VARCHAR(30) DEFAULT 'PENDING',
+    otherShippingAddress BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE DETAILEDINVOICE_seq;
+
+CREATE TABLE DETAILEDINVOICE (
+	detailedInvoiceID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('DETAILEDINVOICE_seq'),
+    invoiceID INT,
+    productID INT,
+    quantity INT,
+    price INT,
+    totalPrice INT,
+    isReviewed  BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE SHIPPINGINFO_seq;
+
+CREATE TABLE SHIPPINGINFO (
+	shippingInfoID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('SHIPPINGINFO_seq'),
+    invoiceID INT,
+    fullname VARCHAR(40),
+    phone VARCHAR(12),
+    address VARCHAR(40)
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE PRODUCT_seq;
+
+CREATE TABLE PRODUCT (
+    productID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('PRODUCT_seq'),
+    categoryID INT, 
+    brandID INT,
+    productRate DOUBLE PRECISION,
+    productName VARCHAR(200),
+    productPrice INT,
+    shortDescrip TEXT,
+    shortTech TEXT,
+    longDescrip TEXT,
+    stock INT,
+    warranty INT,
+    purchased INT,
+    specs TEXT,
+    isSale BOOL DEFAULT FALSE,
+    totalReviews INT DEFAULT 0,
+    images TEXT,
+    isDeleted BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES DEMO *** ủa những chương trình sale
+-- SQLINES DEMO *** TS, 1 productID chỉ có 1 row sale hiện hành, còn tất cả row còn lại đều là isDeleted = true
+-- SQLINES DEMO ***  ng trình sale, set isSale = true
+
+-- SQLINES DEMO *** ững sp sale thì lấy trong bảng SALE_PRODUCTS join với bảng product
+-- SQLINES DEMO *** e có isDeleted = false
+-- SQLINES DEMO *** startDate thì bỏ qua
+-- SQLINES DEMO *** an sale thì lấy 
+-- SQLINES DEMO *** te thì 
+-- SQLINES DEMO *** = true trong SALE_PRODUCT
+-- SQLINES DEMO *** alse trong PRODUCT
+
+-- SQLINES DEMO ***    giá từ bảng product: 
+-- SQLINES DEMO *** false thì lấy giá trong Product
+-- SQLINES DEMO *** true thì check expired trong SALE_PRODUCT: lấy các row có isDeleted = false
+-- SQLINES DEMO ***  startDate thì lấy price trong PRODUCT
+-- SQLINES DEMO *** ian sale thì lấy price trong SALE_PRODUCT
+-- SQLINES DEMO *** ate thì set isSale = false, lấy price trong PRODUCT và isDeleted = true trong SALE_PRODUCT
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE SALEPRODUCT (
+    productID INT,
+    startSale DATE,
+    endSale DATE,
+    productPrice INT,
+    isDeleted BOOL DEFAULT FALSE
+) ;
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE SEQUENCE REVIEW_seq;
+
+CREATE TABLE REVIEW (
+	reviewID INT NOT NULL PRIMARY KEY DEFAULT NEXTVAL ('REVIEW_seq'),
+    productID INT,
+    userID INT,
+    reviewDate DATE,
+    reviewContent TEXT,
+    rate DOUBLE PRECISION,
+    isDeleted BOOL DEFAULT FALSE
+) ;
+-- SQLINES DEMO *** *********************************************************************************************
+-- foreign key
+-- PRODUCT
+ALTER TABLE PRODUCT ADD CONSTRAINT PRD_BRAND_FK FOREIGN KEY(brandID) REFERENCES BRAND(brandID);
+ALTER TABLE PRODUCT ADD CONSTRAINT PRD_CATEGORY_FK FOREIGN KEY(categoryID) REFERENCES CATEGORY(categoryID);
+
+-- ROLE_USER
+ALTER TABLE "USER" ADD CONSTRAINT USER_ROLE_USER_FK FOREIGN KEY(roleID) REFERENCES "ROLE"(roleID);
+
+-- INVOICE
+ALTER TABLE INVOICE ADD CONSTRAINT INVOICE_USER_FK FOREIGN KEY(userID) REFERENCES "USER"(userID);
+
+-- DETAILED_INVOICE
+ALTER TABLE DETAILEDINVOICE ADD CONSTRAINT DI_INVOICE_FK FOREIGN KEY(invoiceID) REFERENCES INVOICE(invoiceID);
+ALTER TABLE DETAILEDINVOICE ADD CONSTRAINT DI_PRD_FK FOREIGN KEY(productID) REFERENCES PRODUCT(productID);
+
+-- SHIPPING_INFO
+ALTER TABLE SHIPPINGINFO ADD CONSTRAINT SI_INVOICE_FK FOREIGN KEY(invoiceID) REFERENCES INVOICE(invoiceID);
+
+-- SALE_PRODUCTS
+ALTER TABLE SALEPRODUCT ADD CONSTRAINT SALEPRD_PRD_FK FOREIGN KEY(productID) REFERENCES PRODUCT(productID);
+
+-- REVIEW
+ALTER TABLE REVIEW ADD CONSTRAINT REVIEW_PRD_FK FOREIGN KEY(productID) REFERENCES PRODUCT(productID);
+ALTER TABLE REVIEW ADD CONSTRAINT REVIEW_USER_FK FOREIGN KEY(userID) REFERENCES "USER"(userID);
+
+-- SQLINES DEMO *** *********************************************************************************************
+-- SQLINES DEMO *** CT(specs) VALUES 
+-- SQLINES DEMO *** ','content': 'Rose Gold'},{'tag': 'Brightness','content': '300 nits'}]");
+
+-- insert data ROLE
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO "ROLE" (roleName) VALUES ('ROLE_CUSTOMER');
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO "ROLE" (roleName) VALUES ('ROLE_ADMIN');
+
+-- SQLINES DEMO *** USER
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO "USER" (fullname, email, pswd, DOB, phone, address, roleID, gender)
+VALUES('Đinh Ngọc UP', 'phuong@gmail.com', '1', '2000-01-01', '0904588091', '39/4/37 Huynh Van Banh', 1,'female');
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO "USER" (fullname, email, pswd, DOB, phone, address, roleID, gender)
+VALUES('Phùng KL', 'linh@gmail.com', '1', '2000-01-01', '0904588091', '39A Đoàn Thị Điểm', 1,'female');
+
+-- SQLINES DEMO *** gory
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Smart Watch', 'smart-watch', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('PC Accessories', 'pc-accessories', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Audio System', 'audio-system', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('HeadPhone', 'headphone', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Mouse', 'mouse', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Gaming Desk/Chair', 'gaming-desk-chair', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Laptop', 'laptop', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Monitor', 'monitor', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Keyboard', 'keyboard', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('Smart Phone', 'smart-phone', false);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO CATEGORY (categoryName, categorySlug, categoryExact)
+VALUES('All', '', true);
+-- insert data BRAND
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('Asus', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('Apple', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('HP', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('DELL', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('SAMSUNG', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('XIAOMI', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('HUAWEI', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('MSI', null);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO BRAND (brandName, brandImg) VALUES ('ACER', null);
+
+
+-- SQLINES DEMO *** UCT
+
+-- SMART WATCH
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(1, 1, 3.5, 'Apple watch series 4',  6000000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/watch5.jpeg","images/watch2.jpeg","images/watch6.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(2, 2, 5, 'PlayStation 4',  1200000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',2,'{"images/console5.jpeg","images/console2.jpeg","images/console3.jpeg","images/console4.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(2, 1, 3.5, 'Nitendo Switch',  2000000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/console5.jpeg","images/console2.jpeg","images/console3.jpeg","images/console4.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(2, 3, 4.5, 'Xbox Pro', 800000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/console1.jpeg","images/console2.jpeg","images/console3.jpeg","images/console4.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(2, 2, 3.5, 'PlayStation 3',  700000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/console2.jpeg","images/console4.jpeg","images/console4.jpeg","images/console5.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(2, 3, 2.5, 'PlayStation 5',  1300000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/console3.jpeg","images/console5.jpeg","images/console1.jpeg","images/console4.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(3, 1, 4.5, 'Audio System Razer',  5000000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/headphone7.jpeg","images/headphone1.jpeg","images/headphone4.jpeg","images/headphone6.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(3, 2, 3, 'Audio System 2',  3000000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/headphone2.jpeg","images/headphone3.jpeg","images/headphone2.jpeg","images/headphone6.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(3, 3, 2, 'Mpow Air',  600000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/headphone1.jpeg","images/headphone4.jpeg","images/headphone5.jpeg","images/headphone2.jpeg"}');
+
+INSERT INTO PRODUCT (categoryID, brandID, productRate, productName, productPrice, shortTech, 
+shortDescrip, longDescrip, warranty, stock, purchased, specs, totalReviews, images) 
+VALUES(3, 8, 4, 'Audio System Kraken',  800000,'{"Chip: S5 with 64-bit dual-core processor","Retina Display: LTPO OLED (1000 nits)","Capacity: 32GB","Battery Life: up to 18 hours","Water resistant: 50 meters","Color: Space Gray, Gold, Silver"}',
+'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus incidunt distinctio saepe laudantium, nam unde quaerat perferendis harum, 
+aspernatur atque blanditiis rerum possimus! Praesentium dolorum, accusamus repellat doloribus ex ipsam', 
+'{{"header": "The power to bring your creations to life","content": "The powerful combination of an Intel® Core™ processor, ample memory and storage make your creative vision seamlessly come to life faster than ever before."},{"header": "Thoughtfully designed","content": "Sometimes bigger is better. Watch your creations come to life in accurate, vibrant color on this massive high definition, micro-edge display."},{"header": "Privacy for your peace of mind","content": "Keep it confidential with an unhackable camera shutter and dedicated microphone mute button."}}',
+2, 50, 10, 
+'{{"tag": "Color","content": "Rose Gold"},{"tag": "Brightness","content": "300 nits"},{"tag": "Display resolution","content": "24"},{"tag": "Signal input connectors","content": "1 HDMI 2.0 (with HDCP support); 1 DisplayPort™ 1.4 (with HDCP support)"},{"tag": "Ports","content": "1 analog and digital audio-out; 3 USB 3.0 (1 upstream, 2 downstream)"},{"tag": "Dimensions (W X D X H)","content": "25.98 x13.07 x 18.62 in Without stand"},{"tag": "Weight","content": "15.8 lb"},{"tag": "Display viewing angle","content": "160° vertical; 170° horizontal"},{"tag": "Display type","content": "LED backlight"}}',10,'{"images/headphone3.jpeg","images/headphone5.jpeg","images/headphone7.jpeg","images/headphone2.jpeg"}');
+
+-- SQLINES DEMO *** RODUCT
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO SALEPRODUCT (productID, startSale , endSale , productPrice) 
+VALUES (1, '2021-01-01 00:00:00', '2021-10-01 00:00:00', 10000000);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO SALEPRODUCT (productID, startSale , endSale , productPrice) 
+VALUES (2, '2021-01-01 00:00:00', '2021-10-02 00:00:00', 4000000);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO SALEPRODUCT (productID, startSale , endSale , productPrice) 
+VALUES (3, '2021-01-01 00:00:00', '2021-05-01 00:00:00', 3000000);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO SALEPRODUCT (productID, startSale , endSale , productPrice) 
+VALUES (4, '2021-01-01 00:00:00', '2021-06-01 00:00:00', 3000000);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO SALEPRODUCT (productID, startSale , endSale , productPrice) 
+VALUES (5, '2021-01-01 00:00:00', '2021-12-01 00:00:00', 4000000);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO SALEPRODUCT (productID, startSale , endSale , productPrice) 
+VALUES (6, '2021-01-01 00:00:00', '2021-10-03 00:00:00', 1000000);
+
+-- inset data REVIEW
+-- PRODUCT 1
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 1, '2021-03-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 2, '2021-03-04', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 2, '2021-03-05', 'Màu sắc sản phầm không giống quảng cáo', 3);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 1, '2021-03-06', 'Sản phẩm tốt', 4);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 1, '2021-03-07', 'Giao hàng quá chậm, sản phẩm có vẻ không chắc chắn như đã giới thiệu', 2);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 1, '2021-03-08', 'Sản phẩm đúng với quảng cáo, giao hàng nhanh, đóng gói đẹp', 5);
+
+-- PRODUCT 2
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 1, '2021-03-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 1, '2021-03-04', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 2, '2021-03-05', 'Màu sắc sản phầm không giống quảng cáo', 3);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 1, '2021-03-06', 'Sản phẩm tốt', 4);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 2, '2021-03-07', 'Giao hàng quá chậm, sản phẩm có vẻ không chắc chắn như đã giới thiệu', 2);
+
+-- PRODUCT 3
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (3, 1, '2021-03-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (3, 2, '2021-03-04', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (3, 1, '2021-03-05', 'Màu sắc sản phầm không giống quảng cáo', 3);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (3, 1, '2021-03-06', 'Sản phẩm tốt', 4);
+
+-- PRODUCT 4
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (4, 1, '2021-03-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (4, 1, '2021-03-04', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (4, 1, '2021-03-05', 'Màu sắc sản phầm không giống quảng cáo', 3);
+
+-- PRODUCT 5
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (5, 1, '2021-03-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (5, 1, '2021-03-04', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (5, 1, '2021-03-05', 'Màu sắc sản phầm không giống quảng cáo', 3);
+
+-- PRODUCT 6
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (6, 1, '2021-03-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (6, 1, '2021-03-04', 'Sản phẩm rất đẹp', 5);
+
+-- PRODUCT 1
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 2, '2021-03-10', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 2, '2021-03-11', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (1, 1, '2021-03-12', 'Màu sắc sản phầm không giống quảng cáo', 3);
+
+-- PRODUCT 2
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 2, '2021-04-03', 'Sản phẩm được gói cẩn thận, chất lượng tốt, mẫu mã như quảng cáo', 4.5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 2, '2021-05-04', 'Sản phẩm rất đẹp', 5);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 1, '2021-01-05', 'Màu sắc sản phầm không giống quảng cáo', 3);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 2, '2021-02-06', 'Sản phẩm tốt', 4);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+INSERT INTO REVIEW (productID, userID, reviewDate, reviewContent, rate)
+VALUES (2, 1, '2021-01-07', 'Giao hàng quá chậm, sản phẩm có vẻ không chắc chắn như đã giới thiệu', 2);
+
+
+-- use techshop;
+
+
+-- SQLINES DEMO *** t productRate = (select SUM(rate)/2 from review where productID = 6) where productID = 6;
+-- SQLINES DEMO ***  productRate, totalReviews from product where productID = 6;
+
+-- SQLINES DEMO *** voice set isReviewed = false where invoiceID = 2;
+
+-- SQLINES DEMO *** w where reviewID >= 44 and reviewID <=48;
+-- SQLINES DEMO *** t totalReviews = 9, productRate = 4 where productID =1;
+-- SQLINES DEMO *** voice set isReviewed = false where detailedInvoiceID = 3;
+-- SQLINES DEMO *** iew where productID = 1;
+-- 1 4 9
+-- SQLINES DEMO ***  productRate, totalReviews from product where productID = 1;
+
+
+
+
+
+
+
